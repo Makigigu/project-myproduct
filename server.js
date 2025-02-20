@@ -5,7 +5,8 @@ const mysql = require('mysql2');
 const connection = mysql.createConnection({
     host: 'localhost',
     user: 'root',
-    database: 'myproduct-flook'
+    database: 'product-flook',
+    password: 'root'
 });
 
 var app = express();
@@ -16,19 +17,19 @@ app.listen(5000, function() {
     console.log('CORS-enabled web server listening on port 5000');
 });
 
-app.get('/users', function(req, res, next) {
+app.get('/product-flook', function(req, res, next) {
     connection.query(
-        'SELECT * FROM users',
+        'SELECT * FROM product-flook',
         function(err, results, fields) {
             res.status(200).json(results);
         });
 });
 
 
-app.get('/users/:id', function(req, res, next) {
+app.get('/product-flook/:id', function(req, res, next) {
     const id = req.params.id;
     connection.query(
-        'SELECT * FROM users WHERE id = ?',
+        'SELECT * FROM product-flook WHERE id = ?',
         [id],
         function(err, results, fields) {
             res.status(200).json(results);
@@ -36,14 +37,13 @@ app.get('/users/:id', function(req, res, next) {
 });
 
 
-app.post('/users/create', function(req, res, next) {
-    const fname = req.body.fname;
-    const lname = req.body.lname;
-    const username = req.body.username;
-    const password = req.body.password;
-    const avatar = req.body.avatar;
+app.post('/product-flook/create', function(req, res, next) {
+    const product_name = req.body.product_name;
+    const product_price = req.body.product_price;
+    const product_cost = req.body.product_cost;
+    const product_image = req.body.product_image;
     connection.query(
-        'INSERT INTO users (fname, lname, username, password, avatar) VALUES (?, ?, ?, ?, ?)',
+        'INSERT INTO product (product_name, product_price, product_cost, product_image) VALUES (?, ?, ?, ?)',
         [fname, lname, username, password, avatar],
         function(err, results, fields) {
             res.status(200).json(results);
@@ -51,15 +51,14 @@ app.post('/users/create', function(req, res, next) {
 });
 
 
-app.put('/users/update', function(req, res, next) {
-    const fname = req.body.fname;
-    const lname = req.body.lname;
-    const username = req.body.username;
-    const password = req.body.password;
-    const avatar = req.body.avatar;
+app.put('/product-flook/update', function(req, res, next) {
+    const product_name = req.body.product_name;
+    const product_price = req.body.product_price;
+    const product_cost = req.body.product_cost;
+    const product_image = req.body.product_image;
     const id = req.body.id;
     connection.query(
-        'UPDATE users SET fname = ?, lname = ?, username = ?, password = ?, avatar = ? WHERE id = ?', [fname, lname, username, password, avatar, id],
+        'UPDATE product-flook SET product_name = ?, product_price = ?, product_cost = ?, product_image = ?  WHERE id = ?', [product_name, product_price, product_cost, product_image, id],
         function(err, results, fields) {
             // res.status(200).json(results);
             res.status(200).json({status : '200',
@@ -71,10 +70,10 @@ app.put('/users/update', function(req, res, next) {
 });
 
 
-app.delete('/users/delete', function(req, res, next) {
+app.delete('/product-flook/delete', function(req, res, next) {
     const id = req.body.id;
     connection.query(
-        'DELETE FROM users WHERE id = ?',
+        'DELETE FROM product-flook WHERE id = ?',
         [id],
         function(err, results, fields) {
             // res.status(200).json(results);
